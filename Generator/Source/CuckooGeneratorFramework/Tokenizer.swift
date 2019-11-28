@@ -83,7 +83,26 @@ public struct Tokenizer {
             }
             return nil
         }
-
+        
+        if [Kinds.ProtocolDeclaration.rawValue,
+            Kinds.ClassDeclaration.rawValue].contains(kind) {
+            
+            func prevLinebreakIndex(before endIndex: String.Index) -> String.Index? {
+                return source[source.startIndex..<endIndex].lastIndex(of: "\n")
+            }
+            
+            guard let offset = range?.first,
+                let prevLineEndIndex = prevLinebreakIndex(before: source.index(source.startIndex, offsetBy: offset)),
+                let prevLineStartIndex = prevLinebreakIndex(before: prevLineEndIndex) else {
+                    return nil
+            }
+            
+            let prevLine = String(source[prevLineStartIndex..<prevLineEndIndex])
+            guard prevLine.contains("//cuckoo:mock_this") else {
+                return nil
+            }
+        }
+        
         let accessibility = (dictionary[Key.Accessibility.rawValue] as? String).flatMap { Accessibility(rawValue: $0) } ?? .Internal
         let type: WrappableType?
         if let stringType = dictionary[Key.TypeName.rawValue] as? String {

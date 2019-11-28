@@ -24,10 +24,10 @@ function perform_curl {
 function download_generator {
   if [[ "$1" = "latest" ]]; then
     echo "Downloading latest version..."
-    perform_curl "https://api.github.com/repos/Brightify/Cuckoo/releases/latest"
+    perform_curl "https://api.github.com/repos/artur-zaremba/Cuckoo/releases/latest"
   else
     echo "Downloading version $1..."
-    perform_curl "https://api.github.com/repos/Brightify/Cuckoo/releases/tags/$1"
+    perform_curl "https://api.github.com/repos/artur-zaremba/Cuckoo/releases/tags/$1"
   fi
   chmod +x "$FILE_NAME"
 }
